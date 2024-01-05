@@ -17,6 +17,7 @@ from ir_rx.nec import NEC_8, NEC_16, SAMSUNG
 from ir_rx.sony import SONY_12, SONY_15, SONY_20
 from ir_rx.philips import RC5_IR, RC6_M0
 from ir_rx.mce import MCE
+from ir_rx.apple import APPLE
 
 # Define pin according to platform
 if platform == "pyboard":
@@ -29,6 +30,7 @@ elif platform == "esp32" or platform == "esp32_LoBo":
 elif platform == "rp2":
     p = Pin(16, Pin.IN)
 
+
 # User callback
 def cb(data, addr, ctrl):
     if data < 0:  # NEC protocol sends repeat codes.
@@ -38,7 +40,18 @@ def cb(data, addr, ctrl):
 
 
 def test(proto=0):
-    classes = (NEC_8, NEC_16, SONY_12, SONY_15, SONY_20, RC5_IR, RC6_M0, MCE, SAMSUNG)
+    classes = (
+        NEC_8,
+        NEC_16,
+        SONY_12,
+        SONY_15,
+        SONY_20,
+        RC5_IR,
+        RC6_M0,
+        MCE,
+        SAMSUNG,
+        APPLE,
+    )
     ir = classes[proto](p, cb)  # Instantiate receiver
     ir.error_function(print_error)  # Show debug information
     # ir.verbose = True
@@ -64,6 +77,7 @@ test(5) for Philips RC-5 protocol,
 test(6) for RC6 mode 0.
 test(7) for Microsoft Vista MCE.
 test(8) for Samsung.
+test(9) for Apple Remote A1156.
 
 Hit ctrl-c to stop, then ctrl-d to soft reset."""
 
